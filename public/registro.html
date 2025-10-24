@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-br">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Crie sua conta</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#38BDF8",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111827",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        .form-input {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+        
+        /* Responsividade Mobile */
+        @media (max-width: 640px) {
+            .max-w-md {
+                width: 100%;
+                padding: 16px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .space-y-6 > * + * {
+                margin-top: 16px;
+            }
+            
+            .space-y-4 > * + * {
+                margin-top: 12px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-light dark:bg-background-dark p-4">
+    <div class="w-full max-w-md space-y-6">
+        <div class="text-center">
+            <div class="flex items-center justify-center mb-4">
+                <span class="material-symbols-outlined text-primary text-5xl">movie_filter</span>
+            </div>
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Crie sua conta</h1>
+            <p class="mt-2 text-base text-gray-600 dark:text-gray-400">Comece a organizar e compartilhar o que você assiste.</p>
+        </div>
+
+        <form id="registerForm" class="space-y-4">
+            <div class="flex flex-col gap-3">
+                <label class="flex flex-col flex-1">
+                    <p class="text-base font-medium text-gray-700 dark:text-white pb-2">Nome de usuário</p>
+                    <div class="relative flex w-full items-center">
+                        <span class="material-symbols-outlined absolute left-4 text-gray-400 dark:text-gray-500">person</span>
+                        <input 
+                            id="name"
+                            class="form-input flex w-full flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800/20 text-gray-900 dark:text-white focus:border-primary focus:ring-primary h-14 placeholder:text-gray-400 dark:placeholder:text-gray-500 p-4 pl-12 text-base font-normal leading-normal" 
+                            placeholder="Escolha um nome de usuário" 
+                            required/>
+                    </div>
+                </label>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <label class="flex flex-col flex-1">
+                    <p class="text-base font-medium text-gray-700 dark:text-white pb-2">E-mail</p>
+                    <div class="relative flex w-full items-center">
+                        <span class="material-symbols-outlined absolute left-4 text-gray-400 dark:text-gray-500">mail</span>
+                        <input 
+                            id="email"
+                            class="form-input flex w-full flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800/20 text-gray-900 dark:text-white focus:border-primary focus:ring-primary h-14 placeholder:text-gray-400 dark:placeholder:text-gray-500 p-4 pl-12 text-base font-normal leading-normal" 
+                            placeholder="seu.email@exemplo.com" 
+                            type="email" 
+                            required/>
+                    </div>
+                </label>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <label class="flex flex-col flex-1">
+                    <p class="text-base font-medium text-gray-700 dark:text-white pb-2">Senha</p>
+                    <div class="relative flex w-full items-center">
+                        <span class="material-symbols-outlined absolute left-4 text-gray-400 dark:text-gray-500">lock</span>
+                        <input 
+                            id="password"
+                            class="form-input flex w-full flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800/20 text-gray-900 dark:text-white focus:border-primary focus:ring-primary h-14 placeholder:text-gray-400 dark:placeholder:text-gray-500 p-4 pl-12 pr-12 text-base font-normal leading-normal" 
+                            placeholder="Crie uma senha forte" 
+                            type="password" 
+                            required/>
+                        <button 
+                            type="button"
+                            aria-label="Mostrar senha" 
+                            class="absolute right-4 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 toggle-password"
+                            data-target="password">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </button>
+                    </div>
+                </label>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <label class="flex flex-col flex-1">
+                    <p class="text-base font-medium text-gray-700 dark:text-white pb-2">Confirmar Senha</p>
+                    <div class="relative flex w-full items-center">
+                        <span class="material-symbols-outlined absolute left-4 text-gray-400 dark:text-gray-500">lock</span>
+                        <input 
+                            id="confirmPassword"
+                            class="form-input flex w-full flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800/20 text-gray-900 dark:text-white focus:border-primary focus:ring-primary h-14 placeholder:text-gray-400 dark:placeholder:text-gray-500 p-4 pl-12 pr-12 text-base font-normal leading-normal" 
+                            placeholder="Confirme sua senha" 
+                            type="password" 
+                            required/>
+                        <button 
+                            type="button"
+                            aria-label="Mostrar senha" 
+                            class="absolute right-4 text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 toggle-password"
+                            data-target="confirmPassword">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </button>
+                    </div>
+                </label>
+            </div>
+
+            <div id="message" class="text-sm p-3 rounded text-center hidden"></div>
+
+            <div>
+                <button 
+                    type="submit"
+                    id="registerBtn"
+                    class="flex h-14 w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 text-base font-semibold text-white shadow-sm transition-all hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-50">
+                    Registrar
+                </button>
+            </div>
+
+            <div class="text-center">
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Já tem uma conta? 
+                    <a class="font-semibold text-primary hover:underline" href="login.html">Faça login</a>
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const API_URL = 'http://localhost:3000';
+
+    // Toggle de visibilidade de senha
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            const icon = this.querySelector('.material-symbols-outlined');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        });
+    });
+
+    function showMessage(text, type) {
+        const messageEl = document.getElementById('message');
+        messageEl.textContent = text;
+        messageEl.className = 'text-sm p-3 rounded text-center';
+        
+        if (type === 'error') {
+            messageEl.classList.add('bg-red-900', 'text-red-200');
+        } else if (type === 'success') {
+            messageEl.classList.add('bg-green-900', 'text-green-200');
+        }
+        
+        messageEl.classList.remove('hidden');
+    }
+
+    function hideMessage() {
+        document.getElementById('message').classList.add('hidden');
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideMessage();
+
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const registerBtn = document.getElementById('registerBtn');
+
+        if (!name || !email || !password || !confirmPassword) {
+            showMessage('Preencha todos os campos', 'error');
+            return;
+        }
+
+        if (password.length < 6) {
+            showMessage('A senha deve ter no mínimo 6 caracteres', 'error');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            showMessage('As senhas não coincidem', 'error');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            showMessage('E-mail inválido', 'error');
+            return;
+        }
+
+        registerBtn.disabled = true;
+        registerBtn.textContent = 'Registrando...';
+
+        try {
+            const response = await fetch(`${API_URL}/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    name, 
+                    email, 
+                    password,
+                    isAdmin: false 
+                })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                showMessage(data.error || 'Erro ao registrar', 'error');
+                return;
+            }
+
+            showMessage('Conta criada com sucesso!', 'success');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1000);
+
+        } catch (error) {
+            showMessage('Erro ao conectar com o servidor', 'error');
+        } finally {
+            registerBtn.disabled = false;
+            registerBtn.textContent = 'Registrar';
+        }
+    });
+</script>
+</body>
+</html>
+

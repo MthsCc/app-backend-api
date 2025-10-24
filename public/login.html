@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#38BDF8",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111827",
+                        "text-light": "#E2E8F0",
+                        "text-subtle": "#94A3B8",
+                        "surface-dark": "#1F2937",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Spline Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+        
+        /* Animação de Blop */
+        @keyframes blop {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+        
+        .blop {
+            position: fixed;
+            pointer-events: none;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(56, 189, 248, 0.8), rgba(56, 189, 248, 0.2));
+            animation: blop 0.6s ease-out forwards;
+        }
+        
+        /* Responsividade Mobile */
+        @media (max-width: 640px) {
+            .relative.z-10 {
+                padding: 16px;
+            }
+            
+            .text-\[32px\] {
+                font-size: 24px;
+            }
+            
+            h-14 {
+                height: 48px;
+            }
+            
+            .space-y-6 > * + * {
+                margin-top: 16px;
+            }
+            
+            .space-y-4 > * + * {
+                margin-top: 12px;
+            }
+        }
+        
+        /* Animação de entrada do modal */
+        @keyframes modalBlop {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .modal-blop {
+            animation: modalBlop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-dark p-4 group/design-root overflow-x-hidden overflow-y-auto">
+    <div class="absolute inset-0 z-0 h-full w-full bg-cover bg-center bg-no-repeat opacity-10" data-alt="Abstract cinematic background pattern" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuByOnjxKYgJYU41wabx0E81IyEWIM0axhPRz15c1lJJuc7OydLi8x9NKIRCSCPB2m1spOVZ-AtQA2_uxrRg3XIh5wB9_qhcJzNfuTyyx0nUIC8qBR7Vit2vsZwt6stPTz1d1n8Y7xqLD4jo5C3L0pODhsWeEpA9aS64_oNyoRqnmBf973pzBMyJkJXTCcySE5eor0oxCFi4bxf_P09SaH4GN5Xz6A90wwZvWGD2-f_CcEt5-0CnVOW9L44qwBG5TtEQNHy6-tTZBWZ9');"></div>
+    <div class="relative z-10 flex w-full max-w-md flex-col items-center justify-center space-y-6 min-h-screen sm:min-h-auto py-4 sm:py-0">
+        <div class="flex items-center justify-center gap-3 pb-4">
+            <span class="material-symbols-outlined text-primary text-5xl">movie</span>
+        </div>
+        <div class="w-full text-center">
+            <h1 class="text-text-light tracking-tight text-[28px] sm:text-[32px] font-bold leading-tight">Bem-vindo de volta!</h1>
+            <p class="text-text-subtle text-base font-normal leading-normal pt-1">Acesse sua conta para continuar</p>
+        </div>
+
+        <form id="loginForm" class="w-full space-y-4">
+            <label class="flex w-full flex-col">
+                <p class="text-text-light text-base font-medium leading-normal pb-2">E-mail</p>
+                <div class="relative flex w-full items-center">
+                    <span class="material-symbols-outlined absolute left-4 text-text-subtle">mail</span>
+                    <input 
+                        id="email" 
+                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 focus:ring-2 focus:ring-primary/50 border-none bg-surface-dark h-14 placeholder:text-text-subtle p-4 pl-12 text-base font-normal leading-normal" 
+                        placeholder="seuemail@exemplo.com" 
+                        type="email" 
+                        required/>
+                </div>
+            </label>
+
+            <label class="flex w-full flex-col">
+                <p class="text-text-light text-base font-medium leading-normal pb-2">Senha</p>
+                <div class="relative flex w-full items-center">
+                    <span class="material-symbols-outlined absolute left-4 text-text-subtle">lock</span>
+                    <input 
+                        id="password" 
+                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 focus:ring-2 focus:ring-primary/50 border-none bg-surface-dark h-14 placeholder:text-text-subtle p-4 pl-12 pr-12 text-base font-normal leading-normal" 
+                        placeholder="Sua senha" 
+                        type="password" 
+                        required/>
+                    <button 
+                        type="button"
+                        aria-label="Toggle password visibility" 
+                        class="absolute right-4 text-text-subtle toggle-password"
+                        data-target="password">
+                        <span class="material-symbols-outlined">visibility</span>
+                    </button>
+                </div>
+            </label>
+
+            <div id="message" class="text-sm p-3 rounded text-center hidden"></div>
+
+            <div class="w-full text-right">
+                <a class="text-primary text-sm font-medium leading-normal underline hover:text-primary/80 transition-colors" href="#" onclick="openForgotPasswordModal(event)">Esqueci minha senha?</a>
+            </div>
+
+            <button 
+                type="submit"
+                id="loginBtn"
+                class="flex h-14 w-full items-center justify-center rounded-lg bg-primary px-4 py-2 text-base font-bold text-white transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background-dark active:scale-95"
+                onclick="createBlop(event)">
+                Entrar
+            </button>
+        </form>
+
+
+
+        <div class="pt-4 text-center">
+            <p class="text-text-subtle text-base">
+                Ainda não tem uma conta? 
+                <a class="font-bold text-primary hover:text-primary/80 transition-colors" href="registro.html">Cadastre-se</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const API_URL = 'http://localhost:3000';
+
+    // Toggle de visibilidade de senha
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const input = document.getElementById(targetId);
+            const icon = this.querySelector('.material-symbols-outlined');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        });
+    });
+
+    function showMessage(text, type) {
+        const messageEl = document.getElementById('message');
+        messageEl.textContent = text;
+        messageEl.className = 'text-sm p-3 rounded text-center';
+        
+        if (type === 'error') {
+            messageEl.classList.add('bg-red-900', 'text-red-200');
+        } else if (type === 'success') {
+            messageEl.classList.add('bg-green-900', 'text-green-200');
+        }
+        
+        messageEl.classList.remove('hidden');
+    }
+
+    function hideMessage() {
+        document.getElementById('message').classList.add('hidden');
+    }
+    
+    // Função para criar efeito de blop
+    function createBlop(event) {
+        const rect = event.target.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        
+        const blop = document.createElement('div');
+        blop.className = 'blop';
+        blop.style.left = x + 'px';
+        blop.style.top = y + 'px';
+        blop.style.width = '50px';
+        blop.style.height = '50px';
+        blop.style.marginLeft = '-25px';
+        blop.style.marginTop = '-25px';
+        
+        document.body.appendChild(blop);
+        
+        setTimeout(() => blop.remove(), 600);
+    }
+
+    // Modal de Recuperação de Senha
+    function openForgotPasswordModal(e) {
+        e.preventDefault();
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/50';
+        modal.id = 'forgotPasswordModal';
+        modal.innerHTML = `
+            <div class="relative z-10 flex w-full max-w-md flex-col items-center justify-center space-y-6 rounded-xl bg-surface-dark p-8">
+                <button onclick="document.getElementById('forgotPasswordModal').remove()" class="absolute right-4 top-4 text-text-subtle hover:text-text-light">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+                <div class="w-full text-center">
+                    <h2 class="text-text-light text-2xl font-bold leading-tight">Recuperar Senha</h2>
+                    <p class="text-text-subtle text-base font-normal leading-normal pt-1">Enviaremos um código para seu e-mail</p>
+                </div>
+                <form id="forgotPasswordForm" class="w-full space-y-4">
+                    <div id="forgotMessage" class="text-sm p-3 rounded text-center hidden"></div>
+                    <label class="flex w-full flex-col">
+                        <p class="text-text-light text-base font-medium leading-normal pb-2">E-mail</p>
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-text-subtle">mail</span>
+                            <input type="email" id="forgotEmail" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 focus:ring-2 focus:ring-primary/50 border-none bg-surface-dark h-14 placeholder:text-text-subtle p-4 pl-12 text-base font-normal leading-normal" placeholder="seuemail@exemplo.com" required/>
+                        </div>
+                    </label>
+                    <button type="submit" class="flex h-14 w-full items-center justify-center rounded-lg bg-primary px-4 py-2 text-base font-bold text-white transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background-dark active:scale-95" onclick="createBlop(event)">Enviar Código</button>
+                </form>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        // Adicionar animação de blop ao modal
+        const modalContent1 = modal.querySelector('.relative');
+        modalContent1.classList.add('modal-blop');
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.remove();
+        });
+        
+        document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value.trim();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const messageEl = document.getElementById('forgotMessage');
+            
+            if (!email) {
+                messageEl.textContent = 'Digite seu e-mail';
+                messageEl.className = 'text-sm p-3 rounded text-center bg-red-900 text-red-200';
+                messageEl.classList.remove('hidden');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = 'Enviando...';
+            
+            try {
+                const response = await fetch(`${API_URL}/forgot-password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    messageEl.textContent = data.error || 'Erro ao enviar código';
+                    messageEl.className = 'text-sm p-3 rounded text-center bg-red-900 text-red-200';
+                    messageEl.classList.remove('hidden');
+                    return;
+                }
+                
+                messageEl.textContent = 'Código enviado! Verifique seu e-mail';
+                messageEl.className = 'text-sm p-3 rounded text-center bg-green-900 text-green-200';
+                messageEl.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    modal.remove();
+                    openResetPasswordModal(email);
+                }, 1500);
+                
+            } catch (error) {
+                messageEl.textContent = 'Erro ao conectar com o servidor';
+                messageEl.className = 'text-sm p-3 rounded text-center bg-red-900 text-red-200';
+                messageEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Enviar Código';
+            }
+        });
+    }
+    
+    function openResetPasswordModal(email) {
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black/50';
+        modal.id = 'resetPasswordModal';
+        modal.innerHTML = `
+            <div class="relative z-10 flex w-full max-w-md flex-col items-center justify-center space-y-6 rounded-xl bg-surface-dark p-8">
+                <button onclick="document.getElementById('resetPasswordModal').remove()" class="absolute right-4 top-4 text-text-subtle hover:text-text-light">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+                <div class="w-full text-center">
+                    <h2 class="text-text-light text-2xl font-bold leading-tight">Trocar Senha</h2>
+                    <p class="text-text-subtle text-base font-normal leading-normal pt-1">Digite o código e sua nova senha</p>
+                </div>
+                <form id="resetPasswordForm" class="w-full space-y-4">
+                    <div id="resetMessage" class="text-sm p-3 rounded text-center hidden"></div>
+                    <label class="flex w-full flex-col">
+                        <p class="text-text-light text-base font-medium leading-normal pb-2">Código</p>
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-text-subtle">vpn_key</span>
+                            <input type="text" id="resetCode" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 focus:ring-2 focus:ring-primary/50 border-none bg-surface-dark h-14 placeholder:text-text-subtle p-4 pl-12 text-base font-normal leading-normal" placeholder="Código de 6 dígitos" required/>
+                        </div>
+                    </label>
+                    <label class="flex w-full flex-col">
+                        <p class="text-text-light text-base font-medium leading-normal pb-2">Nova Senha</p>
+                        <div class="relative flex w-full items-center">
+                            <span class="material-symbols-outlined absolute left-4 text-text-subtle">lock</span>
+                            <input type="password" id="newPassword" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 focus:ring-2 focus:ring-primary/50 border-none bg-surface-dark h-14 placeholder:text-text-subtle p-4 pl-12 pr-12 text-base font-normal leading-normal" placeholder="Sua nova senha" required/>
+                            <button type="button" aria-label="Toggle password visibility" class="absolute right-4 text-text-subtle toggle-password" data-target="newPassword">
+                                <span class="material-symbols-outlined">visibility</span>
+                            </button>
+                        </div>
+                    </label>
+                    <button type="submit" class="flex h-14 w-full items-center justify-center rounded-lg bg-primary px-4 py-2 text-base font-bold text-white transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background-dark active:scale-95" onclick="createBlop(event)">Trocar Senha</button>
+                </form>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        // Adicionar animação de blop ao modal
+        const modalContent2 = modal.querySelector('.relative');
+        modalContent2.classList.add('modal-blop');
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.remove();
+        });
+        
+        // Re-adicionar toggle de visibilidade
+        modal.querySelectorAll('.toggle-password').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('.material-symbols-outlined');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.textContent = 'visibility_off';
+                } else {
+                    input.type = 'password';
+                    icon.textContent = 'visibility';
+                }
+            });
+        });
+        
+        document.getElementById('resetPasswordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const code = document.getElementById('resetCode').value.trim();
+            const newPassword = document.getElementById('newPassword').value;
+            const btn = e.target.querySelector('button[type="submit"]');
+            const messageEl = document.getElementById('resetMessage');
+            
+            if (!code || !newPassword) {
+                messageEl.textContent = 'Preencha todos os campos';
+                messageEl.className = 'text-sm p-3 rounded text-center bg-red-900 text-red-200';
+                messageEl.classList.remove('hidden');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = 'Alterando...';
+            
+            try {
+                const response = await fetch(`${API_URL}/reset-password`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, code, newPassword })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    messageEl.textContent = data.error || 'Erro ao trocar senha';
+                    messageEl.className = 'text-sm p-3 rounded text-center bg-red-900 text-red-200';
+                    messageEl.classList.remove('hidden');
+                    return;
+                }
+                
+                messageEl.textContent = 'Senha alterada com sucesso!';
+                messageEl.className = 'text-sm p-3 rounded text-center bg-green-900 text-green-200';
+                messageEl.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    modal.remove();
+                    window.location.href = 'login.html';
+                }, 1500);
+                
+            } catch (error) {
+                messageEl.textContent = 'Erro ao conectar com o servidor';
+                messageEl.className = 'text-sm p-3 rounded text-center bg-red-900 text-red-200';
+                messageEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Trocar Senha';
+            }
+        });
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        hideMessage();
+
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const loginBtn = document.getElementById('loginBtn');
+
+        if (!email || !password) {
+            showMessage('Preencha todos os campos', 'error');
+            return;
+        }
+
+        loginBtn.disabled = true;
+        loginBtn.textContent = 'Entrando...';
+
+        try {
+            const response = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                showMessage(data.error || 'Erro ao fazer login', 'error');
+                return;
+            }
+
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userEmail', email);
+
+            showMessage('Login realizado com sucesso!', 'success');
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1000);
+
+        } catch (error) {
+            showMessage('Erro ao conectar com o servidor', 'error');
+        } finally {
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'Entrar';
+        }
+    });
+</script>
+</body>
+</html>
+
