@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html class="dark" lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#38BDF8",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#111827",
+                        "text-light": "#E2E8F0",
+                        "text-subtle": "#94A3B8",
+                        "surface-dark": "#1F2937",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Spline Sans', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="min-h-screen bg-background-dark">
+    <!-- Header -->
+    <header class="bg-surface-dark border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-4xl">movie</span>
+                <h1 class="text-2xl font-bold text-text-light">Dashboard</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-text-subtle" id="userEmail"></span>
+                <button 
+                    id="logoutBtn"
+                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors">
+                    Sair
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- User Info Card -->
+            <div class="bg-surface-dark rounded-lg p-6 border border-gray-700">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-primary text-3xl">person</span>
+                    <h2 class="text-xl font-bold text-text-light">Informações do Usuário</h2>
+                </div>
+                <div id="userInfo" class="space-y-3 text-text-subtle">
+                    <p>Carregando...</p>
+                </div>
+            </div>
+
+            <!-- Token Info Card -->
+            <div class="bg-surface-dark rounded-lg p-6 border border-gray-700">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-primary text-3xl">security</span>
+                    <h2 class="text-xl font-bold text-text-light">Token JWT</h2>
+                </div>
+                <div class="space-y-3">
+                    <p class="text-text-subtle text-sm">Seu token está armazenado com segurança no localStorage</p>
+                    <button 
+                        id="copyTokenBtn"
+                        class="w-full px-4 py-2 bg-primary hover:bg-primary/90 text-white rounded-lg transition-colors text-sm">
+                        Copiar Token
+                    </button>
+                </div>
+            </div>
+
+            <!-- Session Info Card -->
+            <div class="bg-surface-dark rounded-lg p-6 border border-gray-700">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-primary text-3xl">schedule</span>
+                    <h2 class="text-xl font-bold text-text-light">Sessão</h2>
+                </div>
+                <div class="space-y-3 text-text-subtle text-sm">
+                    <p>Token expira em: <span class="text-primary font-semibold">1 hora</span></p>
+                    <p>Você está logado com segurança</p>
+                    <p id="loginTime"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- API Test Section -->
+        <div class="mt-12 bg-surface-dark rounded-lg p-6 border border-gray-700">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="material-symbols-outlined text-primary text-3xl">api</span>
+                <h2 class="text-xl font-bold text-text-light">Teste de API</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button 
+                    id="testMeBtn"
+                    class="px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium">
+                    Carregar Meus Dados
+                </button>
+                <button 
+                    id="testAllUsersBtn"
+                    class="px-4 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-medium">
+                    Listar Todos os Usuários (Admin)
+                </button>
+            </div>
+
+            <div id="apiResponse" class="mt-6 hidden">
+                <h3 class="text-lg font-semibold text-text-light mb-3">Resposta da API:</h3>
+                <pre id="responseContent" class="bg-black rounded-lg p-4 text-green-400 text-sm overflow-auto max-h-64"></pre>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="mt-12 bg-blue-900/20 border border-blue-700 rounded-lg p-6">
+            <h2 class="text-lg font-bold text-blue-300 mb-3">Como usar</h2>
+            <ul class="text-blue-200 space-y-2 text-sm">
+                <li>✓ Você está autenticado! O token JWT está armazenado no localStorage</li>
+                <li>✓ Use os botões acima para testar os endpoints da API</li>
+                <li>✓ Clique em "Sair" para fazer logout (remove o token)</li>
+                <li>✓ O token expira em 1 hora - você precisará fazer login novamente</li>
+            </ul>
+        </div>
+    </main>
+</div>
+
+<script>
+    const API_URL = 'http://localhost:3000';
+
+    // Verificar autenticação ao carregar a página
+    window.addEventListener('DOMContentLoaded', () => {
+        const token = localStorage.getItem('token');
+        const userEmail = localStorage.getItem('userEmail');
+
+        if (!token) {
+            // Redirecionar para login se não houver token
+            window.location.href = 'login.html';
+            return;
+        }
+
+        // Mostrar email do usuário
+        document.getElementById('userEmail').textContent = userEmail || 'Usuário';
+
+        // Mostrar hora de login
+        const now = new Date();
+        document.getElementById('loginTime').textContent = `Login realizado em: ${now.toLocaleString('pt-BR')}`;
+
+        // Carregar dados do usuário
+        loadUserData();
+    });
+
+    // Função para carregar dados do usuário
+    async function loadUserData() {
+        const token = localStorage.getItem('token');
+        
+        try {
+            const response = await fetch(`${API_URL}/usuarios/me`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Falha ao carregar dados do usuário');
+            }
+
+            const user = await response.json();
+            
+            const userInfo = document.getElementById('userInfo');
+            userInfo.innerHTML = `
+                <div>
+                    <p class="text-text-subtle text-sm">Nome</p>
+                    <p class="text-text-light font-semibold">${user.name}</p>
+                </div>
+                <div>
+                    <p class="text-text-subtle text-sm">E-mail</p>
+                    <p class="text-text-light font-semibold">${user.email}</p>
+                </div>
+                <div>
+                    <p class="text-text-subtle text-sm">ID do Usuário</p>
+                    <p class="text-text-light font-semibold text-xs">${user.id}</p>
+                </div>
+                <div>
+                    <p class="text-text-subtle text-sm">Tipo de Conta</p>
+                    <p class="text-text-light font-semibold">${user.isAdmin ? 'Administrador' : 'Usuário Regular'}</p>
+                </div>
+            `;
+        } catch (error) {
+            console.error('Erro ao carregar dados:', error);
+            document.getElementById('userInfo').innerHTML = '<p class="text-red-400">Erro ao carregar dados do usuário</p>';
+        }
+    }
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userEmail');
+        window.location.href = 'login.html';
+    });
+
+    // Copiar token
+    document.getElementById('copyTokenBtn').addEventListener('click', () => {
+        const token = localStorage.getItem('token');
+        navigator.clipboard.writeText(token).then(() => {
+            const btn = document.getElementById('copyTokenBtn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Token copiado!';
+            setTimeout(() => {
+                btn.textContent = originalText;
+            }, 2000);
+        });
+    });
+
+    // Testar endpoint /usuarios/me
+    document.getElementById('testMeBtn').addEventListener('click', async () => {
+        const token = localStorage.getItem('token');
+        
+        try {
+            const response = await fetch(`${API_URL}/usuarios/me`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+            showApiResponse(data);
+        } catch (error) {
+            showApiResponse({ error: error.message });
+        }
+    });
+
+    // Testar endpoint /usuarios/todos (requer admin)
+    document.getElementById('testAllUsersBtn').addEventListener('click', async () => {
+        const token = localStorage.getItem('token');
+        
+        try {
+            const response = await fetch(`${API_URL}/usuarios/todos`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+            showApiResponse(data);
+        } catch (error) {
+            showApiResponse({ error: error.message });
+        }
+    });
+
+    // Mostrar resposta da API
+    function showApiResponse(data) {
+        const responseDiv = document.getElementById('apiResponse');
+        const responseContent = document.getElementById('responseContent');
+        
+        responseContent.textContent = JSON.stringify(data, null, 2);
+        responseDiv.classList.remove('hidden');
+    }
+</script>
+</body>
+</html>
+
