@@ -23,7 +23,12 @@ app.use(cors());
 app.use(express.json());
 
 // Servir arquivos estáticos (HTML, CSS, JS)
-app.use(express.static(path.join(__dirname, "public")));
+// app.use(express.static(path.join(__dirname, "public"))); // Removido: API pura não serve arquivos estáticos
+
+app.get("/", (req, res) => {
+    res.json({ message: "API está online" });
+});
+
 
 // =============== CONFIGURAÇÃO DE EMAIL ===============
 // Use variáveis de ambiente para suas credenciais
