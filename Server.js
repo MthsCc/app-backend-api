@@ -39,10 +39,12 @@ app.get("/", (req, res) => {
 // =============== CONFIGURAÇÃO DE EMAIL ===============
 // Use variáveis de ambiente para suas credenciais
 const transporter = nodemailer.createTransport({
-  service: 'gmail', // ou outro serviço de email
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // Use SSL
   auth: {
     user: process.env.EMAIL_USER || 'seu_email@gmail.com',
-    pass: process.env.EMAIL_PASSWORD || 'sua_senha_de_app', // Use App Password do Gmail
+    pass: process.env.EMAIL_PASSWORD || 'sua_senha_de_app',
   }
 });
 
