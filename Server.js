@@ -17,7 +17,13 @@ const prisma = new PrismaClient();
 const SECRET_KEY = process.env.SECRET_KEY || "sua_chave_secreta";
 
 // ✅ CORS DEVE ESTAR AQUI (ANTES DAS ROTAS)
-app.use(cors());
+app.use(cors({
+    origin: '*', // Permite qualquer origem (para testes)
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204
+}));
+
 
 // Middleware para parsear JSON
 app.use(express.json());
