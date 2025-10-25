@@ -17,13 +17,7 @@ const prisma = new PrismaClient();
 const SECRET_KEY = process.env.SECRET_KEY || "sua_chave_secreta";
 
 // ✅ CORS DEVE ESTAR AQUI (ANTES DAS ROTAS)
-app.use(cors({
-    origin: '*', // Permite qualquer origem (para testes)
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204
-}));
-
+app.use(cors());
 
 // Middleware para parsear JSON
 app.use(express.json());
@@ -40,11 +34,11 @@ app.get("/", (req, res) => {
 // Use variáveis de ambiente para suas credenciais
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
-  port: 465,
-  secure: true, // Use SSL
+  port: 587,
+  secure: false, // Use STARTTLS
   auth: {
     user: process.env.EMAIL_USER || 'seu_email@gmail.com',
-    pass: process.env.EMAIL_PASSWORD || 'sua_senha_de_app',
+    pass: process.env.EMAIL_PASSWORD || 'sua_senha_de_app', // Use App Password do Gmail
   }
 });
 
